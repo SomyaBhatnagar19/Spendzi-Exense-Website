@@ -5,6 +5,7 @@
 // Load environment variables
 require('dotenv').config();
 const express = require("express");
+const bodyParser = require("body-parser");
 // Connecting the database connection
 const sequelize = require("./util/database");
 
@@ -12,6 +13,10 @@ const app = express();
 
 // Body parser middleware
 app.use(express.json()); // For parsing application/json
+
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // First route
 app.get("/", (req, res) => {
