@@ -31,7 +31,12 @@ app.use(bodyParser.json());
 
 //Routes
 const userRouter = require("./router/userRouter");
+const expenseRouter = require("./router/expenseRouter");
+
 app.use("/", userRouter);
+
+app.use("/homePage", expenseRouter);
+app.use("/expense", expenseRouter);
 
 // Start the server
 
