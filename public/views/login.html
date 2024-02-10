@@ -6,16 +6,15 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="stylesheet" href="/css/login.css" /> -->
-    <title>Login or Sign Up</title>
+    <link rel="stylesheet" href="/style/login.css" />
+    <title>Sign Up or Login</title>
   </head>
   <body>
-    <h2>Tracking expenses is directly proportional to saving money.</h2>
-    <div class="container" id="container">
+    <div class="container right-panel-active" id="container">
       <div class="form-container sign-up-container">
         <form action="/user/signUp" method="post">
           <h1>Create Account</h1>
-          <span>fill your credentials here</span>
+          <span>Fill in your details & then login & you are good to go</span>
           <input
             type="text"
             placeholder="Name"
@@ -43,7 +42,7 @@
       <div class="form-container sign-in-container">
         <form onsubmit="return false;">
           <h1>Login</h1>
-          <span>use your previous credentials</span>
+          <span>use your credentials</span>
           <input
             type="email"
             placeholder="Email"
@@ -58,6 +57,7 @@
             id="loginPassword"
             required
           />
+
           <a href="/password/forgotPasswordPage">Forgot your password?</a>
           <button id="loginBtn">Login</button>
         </form>
@@ -66,25 +66,22 @@
         <div class="overlay">
           <div class="overlay-panel overlay-left">
             <h1>Welcome Back!</h1>
-            <p>
-              To keep connected with us please login with your personal info
-            </p>
+            <p>To track your expense please login with your personal info</p>
             <button class="ghost" id="signIn">Login</button>
           </div>
           <div class="overlay-panel overlay-right">
-            <h1>Hello, Friend!</h1>
-            <p>Enter your personal details and start journey with us</p>
+            <h1>New to Spendzi</h1>
+            <p>
+              Fill your details and start tracking your expenses with Spendzi.
+            </p>
             <button class="ghost" id="signUp">Sign Up</button>
           </div>
         </div>
       </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js" integrity="sha512-hjsdM7r+jdGnUbzGg+Yz0oeD7nUa88o+FoFPvmjjT4IHocVtfzo2o4wU6aYLwMZIPlKLPznlVl1x06gK03EExA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="/js/login.js"></script>
   </body>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"
-    integrity="sha512-QTnb9BQkG4fBYIt9JGvYmxPpd6TBeKp6lsUrtiVQsrJ9sb33Bn9s0wMQO9qVBFbPX3xHRAsBHvXlcsrnJjExjg=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  ></script>
-  <script src="/js/login.js"></script>
 </html>

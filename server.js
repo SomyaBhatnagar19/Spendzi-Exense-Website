@@ -3,31 +3,42 @@
 //main file
 
 // Load environment variables
-require('dotenv').config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require("path");
+const fs = require("fs");
+
 // Connecting the database connection
 const sequelize = require("./util/database");
+const morgan = require("morgan");
 
 const app = express();
 
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+
+// Use morgan middleware for logging HTTP requests
+app.use(morgan("combined", { stream: accessLogStream }));
+
 // Body parser middleware
 app.use(express.json()); // For parsing application/json
-
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// First route
-app.get("/", (req, res) => {
-  res.send("Welcome to Spendzi server!");
-});
+//Routes
+const userRouter = require("./router/userRouter");
+app.use("/", userRouter);
 
 // Start the server
+
 sequelize.sync().then(() => {
   app.listen(3000, () => {
     console.log(`Server is listening on port 3000.`);
   });
-}).catch(error => {
-  console.error('Unable to connect to the database:', error);
+}).catch((error) => {
+  console.error("Unable to connect to the database:", error);
 });
