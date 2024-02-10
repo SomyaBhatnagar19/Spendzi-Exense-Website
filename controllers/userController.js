@@ -10,6 +10,10 @@ const sequelize = require("../util/database");
 //   const token = jwt.sign({ userId, userEmail, isPremiumUser }, "1937683932020310230484786355", { expiresIn: '1h' });
 //   return token;
 // };
+const generateAccessToken = (userId, userEmail) => {
+  const token = jwt.sign({ userId, userEmail }, "1937683932020310230484786355", { expiresIn: '1h' });
+  return token;
+};
 
 // const verifyToken = (req, res, next) => {
 //   const token = req.headers.authorization;
@@ -98,7 +102,8 @@ const postUserLogin = async (req, res, next) => {
       }
       if (result) {
         // Modify this line to include the isPremiumUser parameter if applicable
-        const token = generateAccessToken(user.id, user.email, user.isPremiumUser);
+        // const token = generateAccessToken(user.id, user.email, user.isPremiumUser);
+        const token = generateAccessToken(user.id, user.email);
         
         return res.status(200).json({
           success: true,
