@@ -38,6 +38,13 @@ app.use("/", userRouter);
 app.use("/homePage", expenseRouter);
 app.use("/expense", expenseRouter);
 
+//Associations
+const User = require("./models/userModel");
+const Expense = require('./models/expenseModel');
+
+User.hasMany(Expense, { foreignKey: 'userId' });
+Expense.belongsTo(User, { foreignKey: 'userId' });
+
 // Start the server
 
 sequelize.sync().then(() => {

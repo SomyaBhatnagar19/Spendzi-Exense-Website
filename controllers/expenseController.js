@@ -17,6 +17,8 @@ exports.getHomePage = (req, res, next) => {
       category: category,
       description: description,
       amount: amount,
+      // for user authentication to make the expenses user specific
+      userId: req.user.id,
     })
       .then((result) => {
         res.status(200);
@@ -26,7 +28,8 @@ exports.getHomePage = (req, res, next) => {
   };
   
   exports.getAllExpenses = (req, res, next) => {
-    Expense.findAll()
+    // now finding the user which wants to add the expenses
+    Expense.findAll({ where: { userId: req.user.id } })
       .then((expenses) => {
         res.json(expenses);
       })
@@ -38,10 +41,8 @@ exports.getHomePage = (req, res, next) => {
   exports.deleteExpense = (req, res, next) => {
     const id = req.params.id;
     console.log(id);
-    Expense.findByPk(id)
-      .then((expense) => {
-        return expense.destroy();
-      })
+    console.log(id, req.user.id);
+  Expense.destroy({ where: { id: id, userId: req.user.id } })
       .then((result) => {
         res.redirect("/homePage");
       })
@@ -50,17 +51,19 @@ exports.getHomePage = (req, res, next) => {
   
   exports.editExpense = (req, res, next) => {
     const id = req.params.id;
+    console.log(req.body);
     const category = req.body.category;
     const description = req.body.description;
     const amount = req.body.amount;
   
-    Expense.findByPk(id)
-      .then((expense) => {
-        expense.category = category;
-        expense.description = description;
-        expense.amount = amount;
-        return expense.save();
-      })
+    Expense.update(
+      {
+        category: category,
+        description: description,
+        amount: amount,
+      },
+      { where: { id: id, userId: req.user.id } }
+    )
       .then((result) => {
         res.redirect("/homePage");
       })

@@ -10,10 +10,16 @@ const sequelize = require("../util/database");
 //   const token = jwt.sign({ userId, userEmail, isPremiumUser }, "1937683932020310230484786355", { expiresIn: '1h' });
 //   return token;
 // };
-const generateAccessToken = (userId, userEmail) => {
-  const token = jwt.sign({ userId, userEmail }, "1937683932020310230484786355", { expiresIn: '1h' });
-  return token;
-};
+function generateAccessToken(id, email) {
+  return jwt.sign(
+    { userId: id, email: email },
+    "1937683932020310230484786355"
+  );
+}
+// const generateAccessToken = (userId, userEmail) => {
+//   const token = jwt.sign({ userId, userEmail }, "1937683932020310230484786355", { expiresIn: '1h' });
+//   return token;
+// };
 
 // const verifyToken = (req, res, next) => {
 //   const token = req.headers.authorization;
@@ -53,6 +59,7 @@ const getLoginPage = async (req, res, next) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 const postUserSignUp = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -83,47 +90,37 @@ const postUserSignUp = async (req, res, next) => {
   }
 };
 
-const postUserLogin = async (req, res, next) => {
-  try {
-    const { loginEmail, loginPassword } = req.body;
-
-    const user = await User.findOne({ where: { email: loginEmail } });
-
-    if (!user) {
+// Function to handle user login
+const postUserLogin = (req, res, next) => {
+  const email = req.body.loginEmail;
+  const password = req.body.loginPassword;
+  User.findOne({ where: { email: email } }).then((user) => {
+    if (user) {
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (err) {
+          return res.status(500).json({ success: false, message: "Something went Wrong!" });
+        }
+        if (result == true) {
+          return res.status(200).json({
+            success: true,
+            message: "Login Successful!",
+            token: generateAccessToken(user.id, user.email),
+          });
+        } else {
+          return res.status(401).json({
+            success: false,
+            message: "Password Incorrect!",
+          });
+        }
+      });
+    } else {
       return res.status(404).json({
         success: false,
-        message: "User doesn't Exist!",
+        message: "User doesn't Exists!",
       });
     }
-
-    bcrypt.compare(loginPassword, user.password, (err, result) => {
-      if (err) {
-        return res.status(500).json({ success: false, message: "Something went Wrong!" });
-      }
-      if (result) {
-        // Modify this line to include the isPremiumUser parameter if applicable
-        // const token = generateAccessToken(user.id, user.email, user.isPremiumUser);
-        const token = generateAccessToken(user.id, user.email);
-        
-        return res.status(200).json({
-          success: true,
-          message: "Login Successful!",
-          token: token,
-        });
-      } else {
-        return res.status(401).json({
-          success: false,
-          message: "Password Incorrect!",
-        });
-      }
-    });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+  });
 };
-
 
 const getAllUsers = async (req, res, next) => {
   try {
@@ -149,10 +146,9 @@ const getAllUsers = async (req, res, next) => {
 };
 
 module.exports = {
-//   generateAccessToken,
   getLoginPage,
   postUserLogin,
   postUserSignUp,
-//   isPremiumUser,
   getAllUsers,
 };
+
