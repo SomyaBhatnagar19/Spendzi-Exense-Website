@@ -17,6 +17,7 @@ categoryItems.forEach((item) => {
 
 async function addExpense() {
   try {
+    const date = document.getElementById("dateInput").value; // Extracting the value of the date input field
     const category = document.getElementById("categoryBtn");
     const description = document.getElementById("descriptionValue");
     const amount = document.getElementById("amountValue");
@@ -24,36 +25,26 @@ async function addExpense() {
     const descriptionValue = description.value.trim();
     const amountValue = amount.value.trim();
 
+    if (!date) {
+      alert("Add the Date!");
+      return; // Return here to prevent further execution
+    }
     if (categoryValue == "Select Category") {
       alert("Select the Category!");
-      window.location.href("/homePage");
+      return; // Return here to prevent further execution
     }
     if (!descriptionValue) {
       alert("Add the Description!");
-      window.location.href("/homePage");
+      return; // Return here to prevent further execution
     }
     if (!parseInt(amountValue)) {
       alert("Please enter the valid amount!");
-      window.location.href("/homePage");
+      return; // Return here to prevent further execution
     }
-
-    const currentDate = new Date();
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth() + 1;
-    const year = currentDate.getFullYear();
-
-    // add leading zeros to day and month if needed
-    const formattedDay = day < 10 ? `0${day}` : day;
-    const formattedMonth = month < 10 ? `0${month}` : month;
-
-    // create the date string in date-month-year format
-    const dateStr = `${formattedDay}-${formattedMonth}-${year}`;
-
-    // console.log(dateStr); // outputs something like "23-02-2023"
 
     const res = await axios
       .post("http://localhost:3000/expense/addExpense", {
-        date: dateStr,
+        date: date, // Pass the extracted date value
         category: categoryValue,
         description: descriptionValue,
         amount: parseInt(amountValue),
@@ -113,12 +104,12 @@ async function getAllExpenses() {
       let td4 = document.createElement("td");
 
       let deleteBtn = document.createElement("button");
-      deleteBtn.className = "editDelete btn btn-danger delete";
-      deleteBtn.appendChild(document.createTextNode("Delete"));
+      deleteBtn.className = "editDelete btn btn-danger delete ";
+      deleteBtn.innerHTML = "&#128465;"; // 🗑️
 
       let editBtn = document.createElement("button");
       editBtn.className = "editDelete btn btn-success edit";
-      editBtn.appendChild(document.createTextNode("Edit"));
+      editBtn.innerHTML = "&#128395;"; // ✏️
 
       td4.appendChild(deleteBtn);
       td4.appendChild(editBtn);
@@ -191,6 +182,7 @@ async function editExpense(e) {
     (err) => console.log(err);
   }
 }
+
 addExpenseBtn.addEventListener("click", addExpense);
 
 document.addEventListener("DOMContentLoaded", getAllExpenses);
@@ -202,4 +194,3 @@ table.addEventListener("click", (e) => {
 table.addEventListener("click", (e) => {
   editExpense(e);
 });
-
