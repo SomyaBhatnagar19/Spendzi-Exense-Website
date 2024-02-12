@@ -17,7 +17,7 @@ categoryItems.forEach((item) => {
 
 async function addExpense() {
   try {
-    const date = document.getElementById("dateInput").value; // Extracting the value of the date input field
+    const date = document.getElementById("dateInput").value; 
     const category = document.getElementById("categoryBtn");
     const description = document.getElementById("descriptionValue");
     const amount = document.getElementById("amountValue");
@@ -27,46 +27,52 @@ async function addExpense() {
 
     if (!date) {
       alert("Add the Date!");
-      return; // Return here to prevent further execution
+      return;
     }
     if (categoryValue == "Select Category") {
       alert("Select the Category!");
-      return; // Return here to prevent further execution
+      return;
     }
     if (!descriptionValue) {
       alert("Add the Description!");
-      return; // Return here to prevent further execution
+      return;
     }
     if (!parseInt(amountValue)) {
       alert("Please enter the valid amount!");
-      return; // Return here to prevent further execution
+      return;
     }
 
-    const res = await axios
-      .post("http://localhost:3000/expense/addExpense", {
-        date: date, // Pass the extracted date value
+    const token = localStorage.getItem("token");
+
+    const res = await axios.post(
+      "http://localhost:3000/expense/addExpense",
+      {
+        date: date,
         category: categoryValue,
         description: descriptionValue,
         amount: parseInt(amountValue),
-      })
-      .then((res) => {
-        if (res.status == 200) {
-          window.location.reload();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  } catch {
-    console.error("AddExpense went wrong");
+      },
+      { headers: { Authorization: token } }
+    );
+
+    // Handle the response
+    if (res.status === 200) {
+      window.location.reload();
+    }
+  } catch (err) {
+    console.error("Error adding expense:", err);
   }
 }
+
 
 async function getAllExpenses() {
   // e.preventDefault();
   try {
-    const res = await axios.get("http://localhost:3000/expense/getAllExpenses");
-    console.log(res.data);
+    const token = localStorage.getItem("token");
+    const res = await axios.get(
+      "http://localhost:3000/expense/getAllExpenses",
+      { headers: { Authorization: token } }
+    );
     res.data.forEach((expenses) => {
       const id = expenses.id;
       const date = expenses.date;
@@ -104,15 +110,20 @@ async function getAllExpenses() {
       let td4 = document.createElement("td");
 
       let deleteBtn = document.createElement("button");
-      deleteBtn.className = "editDelete btn btn-danger delete ";
+      deleteBtn.className = "editDelete btn btn-danger delete";
       deleteBtn.innerHTML = "&#128465;"; // 🗑️
-
+      deleteBtn.style.marginRight = "0.5rem"; 
+      deleteBtn.style.backgroundColor = "#ef4444"; 
+      
       let editBtn = document.createElement("button");
       editBtn.className = "editDelete btn btn-success edit";
       editBtn.innerHTML = "&#128395;"; // ✏️
-
+      editBtn.style.backgroundColor = "#047857"; 
+      
+      // Append buttons to the td element
       td4.appendChild(deleteBtn);
       td4.appendChild(editBtn);
+      
 
       tr.appendChild(td1);
       tr.appendChild(td2);
@@ -126,11 +137,13 @@ async function getAllExpenses() {
 
 async function deleteExpense(e) {
   try {
+    const token = localStorage.getItem("token");
     if (e.target.classList.contains("delete")) {
       let tr = e.target.parentElement.parentElement;
       let id = tr.children[0].textContent;
       const res = await axios.get(
-        `http://localhost:3000/expense/deleteExpense/${id}`
+        `http://localhost:3000/expense/deleteExpense/${id}`,
+        { headers: { Authorization: token } }
       );
       window.location.reload();
     }
@@ -141,6 +154,7 @@ async function deleteExpense(e) {
 
 async function editExpense(e) {
   try {
+    const token = localStorage.getItem("token");
     const categoryValue = document.getElementById("categoryBtn");
     const descriptionValue = document.getElementById("descriptionValue");
     const amountValue = document.getElementById("amountValue");
@@ -150,7 +164,8 @@ async function editExpense(e) {
       let id = tr.children[0].textContent;
       //Fill the input values with the existing values
       const res = await axios.get(
-        "http://localhost:3000/expense/getAllExpenses"
+        "http://localhost:3000/expense/getAllExpenses",
+        { headers: { Authorization: token } }
       );
       res.data.forEach((expense) => {
         if (expense.id == id) {
@@ -171,7 +186,8 @@ async function editExpense(e) {
                 category: categoryValue.textContent.trim(),
                 description: descriptionValue.value,
                 amount: amountValue.value,
-              }
+              },
+              { headers: { Authorization: token } } 
             );
             window.location.reload();
           });
