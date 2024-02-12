@@ -10,9 +10,9 @@ const sequelize = require("../util/database");
 //   const token = jwt.sign({ userId, userEmail, isPremiumUser }, "1937683932020310230484786355", { expiresIn: '1h' });
 //   return token;
 // };
-function generateAccessToken(id, email) {
+function generateAccessToken(id, email, isPremiumUser) {
   return jwt.sign(
-    { userId: id, email: email },
+    { userId: id, email: email, isPremiumUser: isPremiumUser },
     "1937683932020310230484786355"
   );
 }
@@ -38,18 +38,18 @@ function generateAccessToken(id, email) {
 //   });
 // };
 
-// const isPremiumUser = async (req, res, next) => {
-//   try {
-//     if (req.user && req.user.isPremiumUser) {
-//       return res.json({ isPremiumUser: true });
-//     } else {
-//       return res.json({ isPremiumUser: false });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// };
+const isPremiumUser = async (req, res, next) => {
+  try {
+    if (req.user && req.user.isPremiumUser) {
+      return res.json({ isPremiumUser: true });
+    } else {
+      return res.json({ isPremiumUser: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 const getLoginPage = async (req, res, next) => {
   try {
@@ -146,9 +146,11 @@ const getAllUsers = async (req, res, next) => {
 };
 
 module.exports = {
+  generateAccessToken,
   getLoginPage,
   postUserLogin,
   postUserSignUp,
   getAllUsers,
+  isPremiumUser,
 };
 
