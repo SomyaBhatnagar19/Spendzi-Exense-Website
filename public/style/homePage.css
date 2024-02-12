@@ -1,0 +1,103 @@
+/* Body Styles */
+body {
+    background-color: #cffafe; 
+    color: #0f0f0f; /* Dark gray text color */
+}
+
+/* Navbar Styles */
+.navbar {
+    background: linear-gradient(135deg, #164e63, #2d6c7c); 
+    box-shadow: 0 11px 16px rgba(0, 0, 0, 0.3);
+}
+ 
+.nav-link {
+    color: #ffffff;
+}
+
+#premium-btn {
+    background-color: #f97316;
+    color: whitesmoke;
+}
+
+#logout-btn {
+    background-color: #451925;
+    color: whitesmoke;
+}
+
+/* Form Styles */
+#form1 {
+    /* margin-right: 20px;  */
+    background: linear-gradient(135deg, #94a3b8, #e2e8f0); 
+    /* padding: 20px;  */
+    border-radius: 3px;
+    margin-bottom: 1rem;
+    box-shadow: 0 11px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Input Styles */
+.input-group-text {
+    background-color: #083344; 
+    border-color: #164e63; 
+    color: #ffffff; 
+}
+
+.form-control {
+    margin-right: 3.25rem;
+    background-color: #ffffff; 
+    border-color: #cffafe; 
+    width: 100%;
+}
+
+/* Button Styles */
+.btn-success {
+    background-color: #083344;
+    border-color: #164e63; 
+    color: #ffffff; 
+}
+
+.btn-success:hover {
+    background-color: #0e7490; 
+    border-color: #0e7490; 
+}
+
+.btn-primary {
+    background-color: #010e0c; 
+    border-color: #00796b; 
+    color: #ffffff; 
+}
+
+.btn-primary:hover {
+    background-color: #005a4c; 
+    border-color: #005a4c; 
+}
+
+/* Table Styles */
+#example {
+    background-color: #b2dfdb; 
+    color: #c4bfbf; 
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-style: italic;
+    border: 1px solid black;
+    box-shadow: 0 6px 10px rgba(21, 18, 83, 0.3);
+}
+
+/* Table Head Styles */
+#tableHead {
+    background: linear-gradient(135deg, #083344, #0e7490); 
+}
+
+/* Table Body Styles */
+#tbodyId {
+    background-color: #06231f; 
+}
+
+/* Table Row Styles */
+.trStyle {
+    background-color: #02628f; 
+}
+
+/* Table Cell Styles */
+th,
+td {
+    border: 1px solid #0a2f2c;
+}
