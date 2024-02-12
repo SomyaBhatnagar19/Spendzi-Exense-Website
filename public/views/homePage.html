@@ -32,14 +32,16 @@
             <a class="nav-link active" aria-current="page" href="/homePage">Home</a>
           </li>
           <li class="nav-item" id="report">
-            <a class="nav-link active" aria-current="page" href="#">Expense Reports &#128274</a>
+            <a id="reportsLink" class="nav-link active" aria-current="page" href="#" onclick="onClickAlert();"
+            >Expense Reports &#128274</a>
           </li>
           <li class="nav-item" id="leaderboard">
-            <a class="nav-link active" aria-current="page" href="#">LeaderBoard &#128274</a>
+            <a id="leaderboardLink" class="nav-link active" aria-current="page" href="#" onclick="onClickAlert();"
+                >LeaderBoard &#128274</a>
           </li>
         </ul>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button id="premium-btn" class="topBtn btn py-1" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Premium Membership includes LeaderBoard & Daily, Monthly & Yearly Reports">
+          <button  id="buyPremiumBtn" class="topBtn btn py-1" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Premium Membership lets you check your expenses comparitivve to others through LeaderBoard & Daily, Monthly & Yearly Reports">
             Buy Premium &#11088
           </button>
           <button id="logout-btn" class="topBtn btn py-1" type="button">Log out</button>
@@ -185,5 +187,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js" integrity="sha512-QTnb9BQkG4fBYIt9JGvYmxPpd6TBeKp6lsUrtiVQsrJ9sb33Bn9s0wMQO9qVBFbPX3xHRAsBHvXlcsrnJjExjg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Custom JS -->
   <script src="/js/homePage.js"></script>
+  <!-- Razorpay JS -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+          function onClickAlert() {
+            alert("Buy Premium to access this feature.");
+          }
+  </script>
 </body>
 </html>

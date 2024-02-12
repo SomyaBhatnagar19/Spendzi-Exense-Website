@@ -32,18 +32,24 @@ app.use(bodyParser.json());
 //Routes
 const userRouter = require("./router/userRouter");
 const expenseRouter = require("./router/expenseRouter");
+const purchaseMembershipRouter = require("./router/purchaseMembershipRouter");
 
 app.use("/", userRouter);
 
 app.use("/homePage", expenseRouter);
 app.use("/expense", expenseRouter);
+app.use("/purchase", purchaseMembershipRouter);
 
 //Associations
 const User = require("./models/userModel");
 const Expense = require('./models/expenseModel');
+const Order = require("./models/ordersModel");
 
 User.hasMany(Expense, { foreignKey: 'userId' });
 Expense.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 // Start the server
 
