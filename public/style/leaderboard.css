@@ -3,57 +3,98 @@
 /* Custom styles for leaderboard page */
 /* Body Styles */
 body {
-    background-color: #cffafe; 
-    color: #0f0f0f; 
-    font-family: "Comic Sans MS", sans-serif;
+  background-color: #cffafe;
+  color: #0f0f0f;
+  font-family: "Comic Sans MS", sans-serif;
 }
 
 /* Navbar Styles */
 .navbar {
-    background: linear-gradient(135deg, #164e63, #2d6c7c); 
-    box-shadow: 0 11px 16px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #164e63, #2d6c7c);
+  box-shadow: 0 11px 16px rgba(0, 0, 0, 0.3);
 }
- 
+
 .nav-link {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 #report {
-    background-color: #4f46e5;
-    color: whitesmoke;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-    border-radius: 5px;
+  background-color: #4f46e5;
+  color: whitesmoke;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
 }
 
 #buyPremiumBtn {
-    color: rgb(14, 14, 14);
-    font-size: large;
+  color: rgb(14, 14, 14);
+  font-size: large;
 }
 
 #logout-btn {
-    background-color: #451925;
-    color: whitesmoke;
+  background-color: #451925;
+  color: whitesmoke;
 }
 
 #table {
-    margin-top: 2rem;
-    background-color: #4a93a5;
-    border: 20px solid #164e63;
+  margin-top: 2rem;
+  background-color: #4a93a5;
+  border: 20px solid #164e63;
 }
-
 
 /* Table header */
 th {
-    color: #0f0e0e;
-  }
+  color: #0f0e0e;
+}
 
-  /* Alternate row background color */
-  tr:nth-child(even) {
-    background-color: rgb(94, 116, 175);
+/* Alternate row background color */
+tr:nth-child(even) {
+  background-color: rgb(94, 116, 175);
+}
+
+/* Hover effect on rows */
+tr:hover {
+  background-color: #4a7e93;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(135deg, #164e63, #2d6c7c);
+    text-align: center;
+    padding: 10px 0;
+  }
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
   }
   
-  /* Hover effect on rows */
-  tr:hover {
-    background-color: #4a7e93;
+  .social-icon {
+    color: #007bff;
+    font-size: 1.5rem;
   }
+  
+  /* Style for individual social icons */
+  .social-icon:hover {
+    color: #0056b3;
+  }
+  
+  /* Responsive styles */
+@media (max-width: 768px) {
+    .footer {
+        position: absolute;
+    }
+    .social-icons {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .social-icon {
+      margin: 5px;
+    }
+  }
+  
