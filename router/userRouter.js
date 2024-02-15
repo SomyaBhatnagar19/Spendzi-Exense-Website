@@ -8,8 +8,10 @@ const userAuthentication = require("../middleware/auth");
 router.use(express.static("public"));
 
 router.get("/", userController.getLoginPage);
-router.get("/isPremiumUser", userAuthentication, userController.isPremiumUser);
 router.post("/user/login", userController.postUserLogin);
 router.post("/user/signUp", userController.postUserSignUp);
+router.get("/getAllUsers", userController.getAllUsers);
+router.get("/isPremiumUser", userAuthentication, userController.isPremiumUser);
+
 
 module.exports = router;
