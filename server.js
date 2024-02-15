@@ -35,8 +35,10 @@ const expenseRouter = require("./router/expenseRouter");
 const purchaseMembershipRouter = require("./router/purchaseMembershipRouter");
 const leaderboardRouter = require("./router/leaderboardRouter");
 
+//for login & signup route
 app.use("/", userRouter);
-
+//for leaderboard route
+app.use("/user", userRouter);
 app.use("/homePage", expenseRouter);
 app.use("/expense", expenseRouter);
 app.use("/purchase", purchaseMembershipRouter);

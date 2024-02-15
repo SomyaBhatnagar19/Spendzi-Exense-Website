@@ -6,10 +6,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sequelize = require("../util/database");
 
-// const generateAccessToken = (userId, userEmail, isPremiumUser) => {
-//   const token = jwt.sign({ userId, userEmail, isPremiumUser }, "1937683932020310230484786355", { expiresIn: '1h' });
-//   return token;
-// };
 function generateAccessToken(id, email, isPremiumUser) {
   return jwt.sign(
     { userId: id, email: email, isPremiumUser: isPremiumUser },
@@ -122,27 +118,21 @@ const postUserLogin = (req, res, next) => {
   });
 };
 
-const getAllUsers = async (req, res, next) => {
-  try {
-    const users = await User.findAll({
-      attributes: [
-        [sequelize.col("name"), "name"],
-        [sequelize.col("totalExpenses"), "totalExpenses"],
-      ],
-      order: [[sequelize.col("totalExpenses"), "DESC"]],
-    });
 
+const getAllUsers = (req, res, next) => {
+  User.findAll({
+    attributes: [
+      [sequelize.col("name"), "name"],
+      [sequelize.col("totalExpenses"), "totalExpenses"],
+    ],
+    order: [[sequelize.col("totalExpenses"), "DESC"]],
+  }).then((users) => {
     const result = users.map((user) => ({
       name: user.getDataValue("name"),
       totalExpenses: user.getDataValue("totalExpenses"),
     }));
-
     res.send(JSON.stringify(result));
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+  });
 };
 
 module.exports = {

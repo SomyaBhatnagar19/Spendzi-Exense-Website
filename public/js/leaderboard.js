@@ -14,32 +14,39 @@ categoryItems.forEach((item) => {
 });
 
 async function getLeaderboard() {
-  const res = await axios.get("http://localhost:3000/premium/getLeaderboard");
-  let position = 1;
-  res.data.forEach((user) => {
-    let name = user.name;
-    let amount = user.amount;
+    const res = await axios.get("http://localhost:3000/user/getAllUsers");
+    let position = 1;
 
-    console.log(name, amount);
-    let tr = document.createElement("tr");
-    tr.setAttribute("class", "trStyle");
+    console.log(res.data);
 
-    tbody.appendChild(tr);
+    res.data.forEach((user) => {
+        let name = user.name;
+        let amount = user.totalExpenses;
 
-    let th = document.createElement("th");
-    th.setAttribute("scope", "row");
-    th.appendChild(document.createTextNode(position++));
+        // Update the button's text content
+        const buyPremiumBtn = document.querySelector("#buyPremiumBtn");
+        buyPremiumBtn.innerHTML = `\uD83D\uDC4B ${name}!`;
 
-    let td1 = document.createElement("td");
-    td1.appendChild(document.createTextNode(name));
+        console.log(name, amount);
+        let tr = document.createElement("tr");
+        tr.setAttribute("class", "trStyle");
 
-    let td2 = document.createElement("td");
-    td2.appendChild(document.createTextNode(amount));
+        tbody.appendChild(tr);
 
-    tr.appendChild(th);
-    tr.appendChild(td1);
-    tr.appendChild(td2);
-  });
+        let th = document.createElement("th");
+        th.setAttribute("scope", "row");
+        th.appendChild(document.createTextNode(position++));
+
+        let td1 = document.createElement("td");
+        td1.appendChild(document.createTextNode(name));
+
+        let td2 = document.createElement("td");
+        td2.appendChild(document.createTextNode(amount));
+
+        tr.appendChild(th);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", getLeaderboard);
