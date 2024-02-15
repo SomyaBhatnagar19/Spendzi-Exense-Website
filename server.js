@@ -33,12 +33,14 @@ app.use(bodyParser.json());
 const userRouter = require("./router/userRouter");
 const expenseRouter = require("./router/expenseRouter");
 const purchaseMembershipRouter = require("./router/purchaseMembershipRouter");
+const leaderboardRouter = require("./router/leaderboardRouter");
 
 app.use("/", userRouter);
 
 app.use("/homePage", expenseRouter);
 app.use("/expense", expenseRouter);
 app.use("/purchase", purchaseMembershipRouter);
+app.use("/premium", leaderboardRouter);
 
 //Associations
 const User = require("./models/userModel");
