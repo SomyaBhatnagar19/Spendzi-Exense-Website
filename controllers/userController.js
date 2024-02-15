@@ -12,38 +12,14 @@ function generateAccessToken(id, email, isPremiumUser) {
     "1937683932020310230484786355"
   );
 }
-// const generateAccessToken = (userId, userEmail) => {
-//   const token = jwt.sign({ userId, userEmail }, "1937683932020310230484786355", { expiresIn: '1h' });
-//   return token;
-// };
-
-// const verifyToken = (req, res, next) => {
-//   const token = req.headers.authorization;
-
-//   if (!token) {
-//     return res.status(401).json({ success: false, message: 'Unauthorized: Missing token' });
-//   }
-
-//   jwt.verify(token, "1937683932020310230484786355", (err, decoded) => {
-//     if (err) {
-//       return res.status(403).json({ success: false, message: 'Forbidden: Invalid token' });
-//     }
-
-//     req.user = decoded;
-//     next();
-//   });
-// };
 
 const isPremiumUser = async (req, res, next) => {
   try {
-    if (req.user && req.user.isPremiumUser) {
+    if (req.user.isPremiumUser) {
       return res.json({ isPremiumUser: true });
-    } else {
-      return res.json({ isPremiumUser: false });
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(error);
   }
 };
 
@@ -51,8 +27,7 @@ const getLoginPage = async (req, res, next) => {
   try {
     res.sendFile(path.join(__dirname, "../", "public", "views", "login.html"));
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(error);
   }
 };
 
@@ -119,20 +94,24 @@ const postUserLogin = (req, res, next) => {
 };
 
 
-const getAllUsers = (req, res, next) => {
-  User.findAll({
-    attributes: [
-      [sequelize.col("name"), "name"],
-      [sequelize.col("totalExpenses"), "totalExpenses"],
-    ],
-    order: [[sequelize.col("totalExpenses"), "DESC"]],
-  }).then((users) => {
-    const result = users.map((user) => ({
-      name: user.getDataValue("name"),
-      totalExpenses: user.getDataValue("totalExpenses"),
-    }));
-    res.send(JSON.stringify(result));
-  });
+const getAllUsers = async (req, res, next) => {
+  try {
+    User.findAll({
+      attributes: [
+        [sequelize.col("name"), "name"],
+        [sequelize.col("totalExpenses"), "totalExpenses"],
+      ],
+      order: [[sequelize.col("totalExpenses"), "DESC"]],
+    }).then((users) => {
+      const result = users.map((user) => ({
+        name: user.getDataValue("name"),
+        totalExpenses: user.getDataValue("totalExpenses"),
+      }));
+      res.send(JSON.stringify(result));
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = {
