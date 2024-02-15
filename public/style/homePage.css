@@ -116,3 +116,45 @@ th,
 td {
     border: 1px solid #0a2f2c;
 }
+
+/* Footer styles */
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(135deg, #164e63, #2d6c7c);
+    text-align: center;
+    padding: 10px 0;
+  }
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .social-icon {
+    color: #007bff;
+    font-size: 1.5rem;
+  }
+  
+  /* Style for individual social icons */
+  .social-icon:hover {
+    color: #0056b3;
+  }
+  
+  /* Responsive styles */
+@media (max-width: 768px) {
+    .footer {
+        position: absolute;
+    }
+    .social-icons {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .social-icon {
+      margin: 5px;
+    }
+  }
