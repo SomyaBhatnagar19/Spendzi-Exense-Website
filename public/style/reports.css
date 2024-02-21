@@ -1,0 +1,97 @@
+/* /public/style/reports.css */
+
+/* Body Styles */
+body {
+    background-color: #cffafe;
+    color: #0f0f0f;
+    font-family: "Comic Sans MS", sans-serif;
+  }
+  
+  /* Navbar Styles */
+  .navbar {
+    background: linear-gradient(135deg, #164e63, #2d6c7c);
+    box-shadow: 0 11px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .nav-link {
+    color: #ffffff;
+  }
+  
+  #report {
+    background-color: #4f46e5;
+    color: whitesmoke;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+  }
+  
+  #buyPremiumBtn {
+    color: rgb(14, 14, 14);
+    font-size: large;
+  }
+  
+  #logout-btn {
+    background-color: #451925;
+    color: whitesmoke;
+  }
+
+  /* Daily table */
+#table1 {
+    margin-top: 20px;
+  }
+  
+  /* Monthly table */
+  #table2 {
+    margin-top: 20px;
+  }
+  
+  /* Yearly table */
+  #year-input {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  /* Show button */
+  .showBtn {
+    margin-top: 10px;
+  }
+  
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  /* Form styling */
+  form {
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    margin-bottom: 5px;
+    display: block;
+    font-weight: bold;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+ 
