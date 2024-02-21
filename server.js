@@ -35,6 +35,7 @@ const expenseRouter = require("./router/expenseRouter");
 const purchaseMembershipRouter = require("./router/purchaseMembershipRouter");
 const leaderboardRouter = require("./router/leaderboardRouter");
 const resetPasswordRouter = require("./router/resetPasswordRouter");
+const reportsRouter = require("./router/reportsRouter");
 
 //for login & signup route
 app.use("/", userRouter);
@@ -45,6 +46,7 @@ app.use("/expense", expenseRouter);
 app.use("/purchase", purchaseMembershipRouter);
 app.use("/premium", leaderboardRouter);
 app.use("/password", resetPasswordRouter);
+app.use("/reports", reportsRouter);
 
 //Associations
 const User = require("./models/userModel");

@@ -253,6 +253,10 @@ async function isPremiumUser() {
 
     //for leaderboard functionality
     leaderboardLink.setAttribute("href", "/premium/getLeaderboardPage");
+
+    //for expense report functionality
+    reportsLink.setAttribute("href", "/reports/getReportsPage");
+    
     buyPremiumBtn.removeEventListener("click", buyPremium);
   } else {
   }
