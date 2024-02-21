@@ -13,5 +13,4 @@ router.post("/user/signUp", userController.postUserSignUp);
 router.get("/getAllUsers", userController.getAllUsers);
 router.get("/isPremiumUser", userAuthentication, userController.isPremiumUser);
 
-
 module.exports = router;
