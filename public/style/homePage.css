@@ -147,7 +147,7 @@ td {
   /* Responsive styles */
 @media (max-width: 768px) {
     .footer {
-        position: absolute;
+        position: relative;
     }
     .social-icons {
       flex-wrap: wrap;

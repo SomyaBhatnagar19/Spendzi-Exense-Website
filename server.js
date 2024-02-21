@@ -34,6 +34,7 @@ const userRouter = require("./router/userRouter");
 const expenseRouter = require("./router/expenseRouter");
 const purchaseMembershipRouter = require("./router/purchaseMembershipRouter");
 const leaderboardRouter = require("./router/leaderboardRouter");
+const resetPasswordRouter = require("./router/resetPasswordRouter");
 
 //for login & signup route
 app.use("/", userRouter);
@@ -43,17 +44,22 @@ app.use("/homePage", expenseRouter);
 app.use("/expense", expenseRouter);
 app.use("/purchase", purchaseMembershipRouter);
 app.use("/premium", leaderboardRouter);
+app.use("/password", resetPasswordRouter);
 
 //Associations
 const User = require("./models/userModel");
 const Expense = require('./models/expenseModel');
 const Order = require("./models/ordersModel");
+const ResetPassword = require("./models/resetPasswordModel");
 
 User.hasMany(Expense, { foreignKey: 'userId' });
 Expense.belongsTo(User, { foreignKey: 'userId' });
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+ResetPassword.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(ResetPassword, { foreignKey: 'userId' });
 
 // Start the server
 

@@ -114,6 +114,7 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
+
 module.exports = {
   generateAccessToken,
   getLoginPage,
