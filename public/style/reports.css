@@ -2,10 +2,11 @@
 
 /* Body Styles */
 body {
-    background-color: #cffafe;
-    color: #0f0f0f;
-    font-family: "Comic Sans MS", sans-serif;
-  }
+  font-family: Arial, sans-serif;
+  background-color: #b9d8f6;
+  margin: 0;
+  padding: 0;
+}
   
   /* Navbar Styles */
   .navbar {
@@ -35,63 +36,63 @@ body {
     color: whitesmoke;
   }
 
-  /* Daily table */
-#table1 {
-    margin-top: 20px;
-  }
-  
-  /* Monthly table */
-  #table2 {
-    margin-top: 20px;
-  }
-  
-  /* Yearly table */
-  #year-input {
-    width: 100%;
-    padding: 5px;
-    font-size: 16px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-  
-  /* Show button */
-  .showBtn {
-    margin-top: 10px;
-  }
-  
-  /* Table styling */
-  table {
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Table styles */
+table {
     width: 100%;
     border-collapse: collapse;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
-  
-  /* Form styling */
-  form {
     margin-bottom: 20px;
-  }
-  
-  .form-label {
-    margin-bottom: 5px;
-    display: block;
-    font-weight: bold;
-  }
-  
-  .form-control {
-    width: 100%;
-    padding: 5px;
-    font-size: 16px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
+}
 
- 
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    color: #dedddd; /* Lighter text color */
+}
+
+th {
+    background-color: #007bff; /* Blue background for table head */
+    color: #fff; /* White text color for table head */
+}
+
+tr:hover {
+    background-color: #334c7e;
+}
+
+/* Form styles */
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="date"], input[type="month"], select {
+    padding: 8px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
