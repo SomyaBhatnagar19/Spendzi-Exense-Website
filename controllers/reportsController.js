@@ -21,3 +21,47 @@ exports.dailyReports = async (req, res, next) => {
     console.log(error);
   }
 };
+
+//Felxible expense fetching function from expenses table
+exports.flexiReports = async (req, res, next) => {
+  try {
+    const { startDate, endDate } = req.body;
+
+    const expenses = await Expense.findAll({
+      where: {
+        date: {
+          [Op.between]: [startDate, endDate],
+        },
+        userId: req.user.id,
+      },
+      raw: true,
+    });
+
+    return res.send(expenses);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+//Monthly expense fetching fucntion from expenses table
+exports.monthlyReports = async (req, res, next) => {
+  try {
+    const month = req.body.month;
+
+    const expenses = await Expense.findAll({
+      where: {
+        date: {
+          [Op.like]: `%-${month}-%`,
+        },
+        userId: req.user.id,
+      },
+      raw: true,
+    });
+
+    return res.send(expenses);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
