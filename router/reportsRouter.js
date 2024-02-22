@@ -11,4 +11,16 @@ router.post(
     userAuthentication,
     reportsController.dailyReports
   );
+  router.post(
+    "/flexiReports",
+    userAuthentication,
+    reportsController.flexiReports
+  );
+  router.post(
+    "/monthlyReports", 
+    userAuthentication, 
+    reportsController.monthlyReports
+  );
+
+  
 module.exports = router;
