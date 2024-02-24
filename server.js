@@ -36,6 +36,7 @@ const purchaseMembershipRouter = require("./router/purchaseMembershipRouter");
 const leaderboardRouter = require("./router/leaderboardRouter");
 const resetPasswordRouter = require("./router/resetPasswordRouter");
 const reportsRouter = require("./router/reportsRouter");
+const creditExpenseRouter = require("./router/creditExpenseRouter");
 
 //for login & signup route
 app.use("/", userRouter);
@@ -47,12 +48,14 @@ app.use("/purchase", purchaseMembershipRouter);
 app.use("/premium", leaderboardRouter);
 app.use("/password", resetPasswordRouter);
 app.use("/reports", reportsRouter);
+app.use("/credit", creditExpenseRouter);
 
 //Associations
 const User = require("./models/userModel");
 const Expense = require('./models/expenseModel');
 const Order = require("./models/ordersModel");
 const ResetPassword = require("./models/resetPasswordModel");
+const CreditExpense = require("./models/creditExpenseModel");
 
 User.hasMany(Expense, { foreignKey: 'userId' });
 Expense.belongsTo(User, { foreignKey: 'userId' });
@@ -63,6 +66,8 @@ Order.belongsTo(User);
 ResetPassword.belongsTo(User, { foreignKey: 'userId' });
 User.hasMany(ResetPassword, { foreignKey: 'userId' });
 
+CreditExpense.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(CreditExpense, { foreignKey: 'userId' });
 // Start the server
 
 sequelize.sync().then(() => {

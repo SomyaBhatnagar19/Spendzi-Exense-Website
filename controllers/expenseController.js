@@ -23,7 +23,7 @@ exports.getHomePage = async (req, res, next) => {
       const category = req.body.category;
       const description = req.body.description;
       const amount = req.body.amount;
-  
+      
       await User.update(
         {
           totalExpenses: req.user.totalExpenses + Number(amount),

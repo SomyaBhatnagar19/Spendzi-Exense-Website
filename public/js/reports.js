@@ -168,7 +168,7 @@ async function getMonthlyReport(e) {
       tbodyMonthly.innerHTML = "";
       res.data.forEach((expense) => {
         totalAmount += expense.amount;
-  
+
         const tr = document.createElement("tr");
         tr.setAttribute("class", "trStyle");
         tbodyMonthly.appendChild(tr);
