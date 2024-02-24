@@ -273,3 +273,52 @@ table.addEventListener("click", (e) => {
 table.addEventListener("click", (e) => {
   editExpense(e);
 });
+
+//Functionality for Credit Expense data
+async function getCreditExpenseData() {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.get("http://localhost:3000/credit/creditExpense", {
+      headers: { Authorization: token },
+    });
+    const { totalIncome } = res.data;
+    const { savings } = await axios.get("http://localhost:3000/credit/creditExpense/savings", {
+      headers: { Authorization: token },
+    });
+    
+    document.getElementById("incomeValuePlaceholder").innerText = totalIncome;
+    document.getElementById("savingsValuePlaceholder").innerText = savings;
+  } catch (err) {
+    console.error("Error getting credit expense data:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", getCreditExpenseData);
+
+//Functionality to add credit expense data
+async function addCreditExpense(e) {
+  e.preventDefault();
+  try {
+    const token = localStorage.getItem("token");
+    const description = document.getElementById("creditDescriptionInput").value.trim();
+    const totalIncome = document.getElementById("totalIncomeInput").value.trim();
+    if (!description || !totalIncome) {
+      alert("Please fill in all fields.");
+      return;
+    }
+    const res = await axios.post(
+      "http://localhost:3000/credit/creditExpense",
+      { description: description, totalIncome: totalIncome },
+      { headers: { Authorization: token } }
+    );
+    console.log(res.data);
+    // Optionally, you can update the UI or show a success message here
+    document.getElementById("creditDescriptionInput").value = "";
+    document.getElementById("totalIncomeInput").value = "";
+    getCreditExpenseData(); // Refresh the credit expense data
+  } catch (err) {
+    console.error("Error adding credit expense:", err);
+  }
+}
+
+document.getElementById("addCreditBtn").addEventListener("click", addCreditExpense);

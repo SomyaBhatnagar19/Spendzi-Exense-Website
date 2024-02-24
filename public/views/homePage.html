@@ -53,7 +53,41 @@
   <!-- Main Content: Expense Form and Table -->
   <div class="m-4">
     <div class="row">
-      
+
+      <!-- Credit Expense Form -->
+<div class="creditExpense">
+  <form id="creditExpenseForm" class="p-2">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <div class="input-group">
+        <span class="input-group-text" id="creditExpenseDescriptionLabel">Credit Expense</span>
+        <span class="input-group-text">&#8377;</span>
+        <input type="number" id="totalIncomeInput" class="form-control" aria-label="Credit Expense" aria-describedby="creditExpenseLabel">
+      </div>
+      <div class="input-group">
+        <span class="input-group-text" id="creditExpenseLabel">Description</span>
+        <input type="text" id="creditDescriptionInput" class="form-control" aria-label="Description" aria-describedby="creditExpenseLabel">
+      </div>
+      <button type="submit" class="btn btn-success" id="addCreditBtn">Add</button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td>Income:</td>
+            <td id="incomeValuePlaceholder">Loading...</td>
+          </tr>
+          <tr>
+            <td>Savings:</td>
+            <td id="savingsValuePlaceholder">Loading...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </form>
+</div>
+
+    
+
       <!-- Expense Form -->
       <div class="col-md-4"> 
         <form id="form1" class="p-2">
@@ -113,6 +147,9 @@
                   <li class="dropdown-item" data-value="Gifting">Gifting</li>
                   <li class="dropdown-item" data-value="Bills & EMI's">
                     Bills & EMI's
+                  </li>
+                  <li class="dropdown-item" data-value="Income/ Credit/ Salary">
+                    Income/ Credit/ Salary
                   </li>
                   <li class="dropdown-item" data-value="Others">Others</li>
                 </ul>
@@ -183,7 +220,7 @@
 
 
   <!-- Footer  -->
-  <footer class="footer mt-auto py-3 bg-light">
+  <footer class="footer mt-auto py-3 bg-light" style="background: linear-gradient(135deg, #164e63, #1b333a); box-shadow: 0 6px 10px rgba(21, 18, 83, 0.3); color:antiquewhite">
     <div class="container text-center">
     <span class="text-muted">© 2022 Spendzi Expense Tracker. All rights reserved.</span>
     <div class="social-icons mt-3">

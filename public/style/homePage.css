@@ -39,6 +39,20 @@ body {
     color: whitesmoke;
 }
 
+.creditExpense {
+    background: linear-gradient(135deg, #94a3b8, #e2e8f0); 
+    border-radius: 3px;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    box-shadow: 0 11px 16px rgba(0, 0, 0, 0.3);
+}
+
+.table {
+    padding: 1rem;
+    background-color: #8dc1f8;
+    border: 0.25rem solid blueviolet;
+}
+
 /* Form Styles */
 #form1 {
     /* margin-right: 20px;  */
@@ -117,44 +131,3 @@ td {
     border: 1px solid #0a2f2c;
 }
 
-/* Footer styles */
-.footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background: linear-gradient(135deg, #164e63, #2d6c7c);
-    text-align: center;
-    padding: 10px 0;
-  }
-  .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .social-icon {
-    color: #007bff;
-    font-size: 1.5rem;
-  }
-  
-  /* Style for individual social icons */
-  .social-icon:hover {
-    color: #0056b3;
-  }
-  
-  /* Responsive styles */
-@media (max-width: 768px) {
-    .footer {
-        position: relative;
-    }
-    .social-icons {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-  
-    .social-icon {
-      margin: 5px;
-    }
-  }
