@@ -217,6 +217,31 @@ async function getMonthlyReport(e) {
     }
   }
   
+//Showing the income and savings
+async function getCreditExpenseData() {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.get("http://localhost:3000/credit/creditExpense", {
+      headers: { Authorization: token },
+    });
+    const totalIncomeSum = res.data.totalIncomeSum;
+    const totalSavingsSum = res.data.totalSavingsSum;
+
+    // Update the elements with the new values
+    const totalIncomeElement = document.getElementById("income");
+    const totalSavingsElement = document.getElementById("saving");
+
+    if (totalIncomeElement && totalSavingsElement) {
+      totalIncomeElement.innerText = `Income: Rs. ${totalIncomeSum}`;
+      totalSavingsElement.innerText = `Savings: Rs. ${totalSavingsSum}`;
+    }
+  } catch (err) {
+    console.error("Error getting credit expense data:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", getCreditExpenseData);
+
 dateShowBtn.addEventListener("click", getDailyReport);
 
 weeklyForm.addEventListener("submit", getFlexiReport);

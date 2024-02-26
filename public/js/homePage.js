@@ -22,7 +22,7 @@ categoryItems.forEach((item) => {
 
 async function addExpense() {
   try {
-    const date = document.getElementById("dateInput").value; 
+    const date = document.getElementById("dateInput").value;
     const category = document.getElementById("categoryBtn");
     const description = document.getElementById("descriptionValue");
     const amount = document.getElementById("amountValue");
@@ -68,7 +68,6 @@ async function addExpense() {
     console.error("Error adding expense:", err);
   }
 }
-
 
 async function getAllExpenses() {
   // e.preventDefault();
@@ -117,18 +116,17 @@ async function getAllExpenses() {
       let deleteBtn = document.createElement("button");
       deleteBtn.className = "editDelete btn btn-danger delete";
       deleteBtn.innerHTML = "&#128465;"; // 🗑️
-      deleteBtn.style.marginRight = "0.5rem"; 
-      deleteBtn.style.backgroundColor = "#ef4444"; 
-      
+      deleteBtn.style.marginRight = "0.5rem";
+      deleteBtn.style.backgroundColor = "#ef4444";
+
       let editBtn = document.createElement("button");
       editBtn.className = "editDelete btn btn-success edit";
       editBtn.innerHTML = "&#128395;"; // ✏️
-      editBtn.style.backgroundColor = "#047857"; 
-      
+      editBtn.style.backgroundColor = "#047857";
+
       // Append buttons to the td element
       td4.appendChild(deleteBtn);
       td4.appendChild(editBtn);
-      
 
       tr.appendChild(td1);
       tr.appendChild(td2);
@@ -192,7 +190,7 @@ async function editExpense(e) {
                 description: descriptionValue.value,
                 amount: amountValue.value,
               },
-              { headers: { Authorization: token } } 
+              { headers: { Authorization: token } }
             );
             window.location.reload();
           });
@@ -214,7 +212,7 @@ async function buyPremium(e) {
   );
   console.log(res);
   var options = {
-    key: res.data.key_id, 
+    key: res.data.key_id,
     order_id: res.data.order.id, // For one time payment
 
     // This handler function will handle the success payment
@@ -256,7 +254,7 @@ async function isPremiumUser() {
 
     //for expense report functionality
     reportsLink.setAttribute("href", "/reports/getReportsPage");
-    
+
     buyPremiumBtn.removeEventListener("click", buyPremium);
   } else {
   }
@@ -281,13 +279,17 @@ async function getCreditExpenseData() {
     const res = await axios.get("http://localhost:3000/credit/creditExpense", {
       headers: { Authorization: token },
     });
-    const { totalIncome } = res.data;
-    const { savings } = await axios.get("http://localhost:3000/credit/creditExpense/savings", {
-      headers: { Authorization: token },
-    });
-    
-    document.getElementById("incomeValuePlaceholder").innerText = totalIncome;
-    document.getElementById("savingsValuePlaceholder").innerText = savings;
+    const totalIncomeSum = res.data.totalIncomeSum;
+    const totalSavingsSum = res.data.totalSavingsSum;
+
+    // Update the elements with the new values
+    const totalIncomeElement = document.getElementById("totalIncome");
+    const totalSavingsElement = document.getElementById("totalSavings");
+
+    if (totalIncomeElement && totalSavingsElement) {
+      totalIncomeElement.innerText = totalIncomeSum;
+      totalSavingsElement.innerText = totalSavingsSum;
+    }
   } catch (err) {
     console.error("Error getting credit expense data:", err);
   }
@@ -295,30 +297,52 @@ async function getCreditExpenseData() {
 
 document.addEventListener("DOMContentLoaded", getCreditExpenseData);
 
+
 //Functionality to add credit expense data
 async function addCreditExpense(e) {
   e.preventDefault();
   try {
     const token = localStorage.getItem("token");
-    const description = document.getElementById("creditDescriptionInput").value.trim();
-    const totalIncome = document.getElementById("totalIncomeInput").value.trim();
+    const description = document
+      .getElementById("creditDescriptionInput")
+      .value.trim();
+    const totalIncome = document
+      .getElementById("totalIncomeInput")
+      .value.trim();
     if (!description || !totalIncome) {
       alert("Please fill in all fields.");
       return;
     }
     const res = await axios.post(
       "http://localhost:3000/credit/creditExpense",
-      { description: description, totalIncome: totalIncome },
+      { description: description, totalIncome: totalIncome, totalSavings: totalSavings },
       { headers: { Authorization: token } }
     );
     console.log(res.data);
-    // Optionally, you can update the UI or show a success message here
-    document.getElementById("creditDescriptionInput").value = "";
-    document.getElementById("totalIncomeInput").value = "";
-    getCreditExpenseData(); // Refresh the credit expense data
+     // Clear the input fields
+     document.getElementById("creditDescriptionInput").value = "";
+     document.getElementById("totalIncomeInput").value = "";
+    // const res2 = await axios.post(
+    //   "http://localhost:3000/credit/creditExpense/savings",
+    //   { totalSavings: totalSavings },
+    //   { headers: { Authorization: token } }
+    // );
+    // console.log(res2.data);
+
+    // Update the totalIncome and totalSavings in the UI if the elements exist
+    const totalIncomeElement = document.getElementById("totalIncome");
+    const totalSavingElement = document.getElementById("totalSavings");
+    if (totalIncomeElement && totalSavingElement) {
+      totalIncomeElement.textContent = res.data.totalIncomeSum;
+      totalSavingElement.textContent = res.data.totalSavingsSum;
+    }
+    
+    getCreditExpenseData();
+   
   } catch (err) {
     console.error("Error adding credit expense:", err);
   }
 }
-
-document.getElementById("addCreditBtn").addEventListener("click", addCreditExpense);
+document
+  .getElementById("addCreditBtn")
+  .addEventListener("click", addCreditExpense);
