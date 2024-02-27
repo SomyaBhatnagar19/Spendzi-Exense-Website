@@ -8,6 +8,8 @@ const Sib = require("sib-api-v3-sdk");
 const { v4: uuidv4 } = require("uuid");
 const saltRounds = 10;
 
+require("dotenv").config();
+
 const hashPassword = async (password) => {
   return await bcrypt.hash(password, saltRounds);
 };
@@ -91,7 +93,6 @@ const resetPasswordPageWithId = async (req, res, next) => {
 };
 
 //FUNCTION TO SEND MAIL LINK FOR RESETING THE NEW PASSWORD
-//FUNCTION TO SEND MAIL LINK FOR RESETING THE NEW PASSWORD
 const sendMail = async (req, res, next) => {
   try {
     const email = req.body.email;
@@ -113,8 +114,7 @@ const sendMail = async (req, res, next) => {
 
     const client = Sib.ApiClient.instance;
     const apiKey = client.authentications["api-key"];
-    apiKey.apiKey =
-      "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";
+    apiKey.apiKey = process.env.SIB_API_KEY;
     const transEmailApi = new Sib.TransactionalEmailsApi();
     const sender = {
       email: "spendzi-expense-tracker@gmail.com",

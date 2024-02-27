@@ -1,5 +1,6 @@
 /** /controllers/purchaseMembershipController.js */
 
+require("dotenv").config();
 const Razorpay = require("razorpay");
 const Order = require("../models/ordersModel");
 const userController = require("./userController");
@@ -7,8 +8,8 @@ const userController = require("./userController");
 exports.purchasePremium = async (req, res) => {
   try {
     var rzp = new Razorpay({
-      key_id: "rzp_test_irRWRJ6Q13otVr",
-      key_secret: "VnpWyQObIW2pMqShoxg4DQll",
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
     const amount = 25000;
     console.log("Entered in Controller");
@@ -17,7 +18,7 @@ exports.purchasePremium = async (req, res) => {
         throw new Error(JSON.stringify(err));
       }
       req.user
-        .createOrder({ orderid: order.id, status: "PENDING" })
+        .createOrder({ orderid: order.id, status: "FAILED" })
         .then(() => {
           return res.status(201).json({ order, key_id: rzp.key_id });
         })
