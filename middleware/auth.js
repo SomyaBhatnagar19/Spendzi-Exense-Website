@@ -1,6 +1,7 @@
 /* /middleware/auth.js */
 
 //user authentication file for user specific expense feature
+require('dotenv').config();
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
@@ -9,7 +10,7 @@ const authenticate = (req, res, next) => {
     const token = req.header("Authorization");
     const user = jwt.verify(
       token,
-      "1937683932020310230484786355"
+      process.env.JWT_SECRET
     );
     User.findByPk(user.userId).then((user) => {
       req.user = user;
