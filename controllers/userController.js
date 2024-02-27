@@ -9,7 +9,7 @@ const sequelize = require("../util/database");
 function generateAccessToken(id, email, isPremiumUser) {
   return jwt.sign(
     { userId: id, email: email, isPremiumUser: isPremiumUser },
-    "1937683932020310230484786355"
+    process.env.JWT_SECRET
   );
 }
 
