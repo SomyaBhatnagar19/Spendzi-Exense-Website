@@ -11,6 +11,7 @@ const table = document.getElementById("tbodyId");
 const buyPremiumBtn = document.getElementById("buyPremiumBtn");
 const reportsLink = document.getElementById("reportsLink");
 const leaderboardLink = document.getElementById("leaderboardLink");
+const downloadReportBtn = document.getElementById("downloadReportBtn");
 
 categoryItems.forEach((item) => {
   item.addEventListener("click", (e) => {
@@ -255,6 +256,9 @@ async function isPremiumUser() {
     //for expense report functionality
     reportsLink.setAttribute("href", "/reports/getReportsPage");
 
+    //for s3 download services
+    downloadReportBtn.setAttribute("href", "/expense/downloadReport")
+
     buyPremiumBtn.removeEventListener("click", buyPremium);
   } else {
   }
@@ -322,13 +326,7 @@ async function addCreditExpense(e) {
      // Clear the input fields
      document.getElementById("creditDescriptionInput").value = "";
      document.getElementById("totalIncomeInput").value = "";
-    // const res2 = await axios.post(
-    //   "http://localhost:3000/credit/creditExpense/savings",
-    //   { totalSavings: totalSavings },
-    //   { headers: { Authorization: token } }
-    // );
-    // console.log(res2.data);
-
+    
     // Update the totalIncome and totalSavings in the UI if the elements exist
     const totalIncomeElement = document.getElementById("totalIncome");
     const totalSavingElement = document.getElementById("totalSavings");
@@ -346,3 +344,23 @@ async function addCreditExpense(e) {
 document
   .getElementById("addCreditBtn")
   .addEventListener("click", addCreditExpense);
+
+  // downloadReportBtn.addEventListener("click", async (e) => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const res = await axios.get("http://localhost:3000/expense/downloadReport", {
+  //       headers: { Authorization: token },
+  //       responseType: 'blob', // Set the response type to blob
+  //     });
+  //     const url = window.URL.createObjectURL(new Blob([res.data]));
+  //     const link = document.createElement('a');
+  //     link.href = url;
+  //     link.setAttribute('download', 'ExpenseReport.txt');
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     link.parentNode.removeChild(link);
+  //   } catch (err) {
+  //     console.error("Error downloading report:", err);
+  //   }
+  // });
+  
