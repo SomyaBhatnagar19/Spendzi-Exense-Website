@@ -150,3 +150,12 @@ td {
 #downloadReportBtn:hover {
   background-color: #56948b; 
 }
+
+.page-link {
+    background-color: #083344;
+    color: white;
+  }
+  .page-link:hover {
+    background-color: #ac8ff7;
+    color: #233b64;
+  }
