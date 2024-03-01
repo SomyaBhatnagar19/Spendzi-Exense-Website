@@ -133,29 +133,31 @@ td {
 
 #download {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 #downloadReportBtn {
-  background-color: #065247;
-  color: rgba(255, 255, 255, 0.867);
+  background-color: #351a60;
+  color: white;
   box-shadow: 0 6px 10px rgba(21, 18, 83, 0.3);
   transition: background-color 0.3s;
   border: 1px solid black;
   padding: 0.5rem;
   border-radius: 10px;
-  margin-top: 1.5rem;
+  text-decoration: none;
 }
 
 #downloadReportBtn:hover {
-  background-color: #56948b; 
+  background-color: #705694; 
 }
 
 .page-link {
-    background-color: #083344;
+    background-color: #0c0844;
     color: white;
   }
   .page-link:hover {
     background-color: #ac8ff7;
     color: #233b64;
+    cursor: pointer;
   }
