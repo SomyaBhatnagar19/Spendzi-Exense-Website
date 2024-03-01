@@ -12,6 +12,7 @@ const buyPremiumBtn = document.getElementById("buyPremiumBtn");
 const reportsLink = document.getElementById("reportsLink");
 const leaderboardLink = document.getElementById("leaderboardLink");
 const downloadReportBtn = document.getElementById("downloadReportBtn");
+const logoutBtn = document.getElementById("logout-btn");
 
 categoryItems.forEach((item) => {
   item.addEventListener("click", (e) => {
@@ -449,3 +450,14 @@ document
   //   }
   // });
   
+  //logout function
+  async function logout() {
+    try {
+      localStorage.clear();
+      window.location.href = "/";
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  logoutBtn.addEventListener("click", logout);
