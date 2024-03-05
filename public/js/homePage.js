@@ -432,13 +432,36 @@ document
   .getElementById("addCreditBtn")
   .addEventListener("click", addCreditExpense);
 
-  //functionality for expenses download on homepage
+// //functionality for expenses download on homepage
+// downloadReportBtn.addEventListener("click", async (e) => {
+//   try {
+//     const token = localStorage.getItem("token");
+//     console.log("inside downloadbtn: ", token);
+//     const res = await axios.get("http://localhost:3000/expense/downloadReport", {
+//       headers: { Authorization: token },
+//       responseType: 'blob', 
+//     });
+//     const url = window.URL.createObjectURL(new Blob([res.data]));
+//     const link = document.createElement('a');
+//     link.href = url;
+//     link.setAttribute('download', 'ExpenseReport.csv'); // Set the file name to .csv
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link); 
+//     // Redirect to homepage
+//     // window.location.href = "/homePage";
+//   } catch (err) {
+//     console.error("Error downloading report:", err);
+//   }
+// });
+// Frontend code
 downloadReportBtn.addEventListener("click", async (e) => {
   try {
     const token = localStorage.getItem("token");
+    console.log("inside downloadbtn: ", token);
     const res = await axios.get("http://localhost:3000/expense/downloadReport", {
       headers: { Authorization: token },
-      responseType: 'blob', 
+      responseType: 'blob',
     });
     const url = window.URL.createObjectURL(new Blob([res.data]));
     const link = document.createElement('a');
@@ -446,13 +469,14 @@ downloadReportBtn.addEventListener("click", async (e) => {
     link.setAttribute('download', 'ExpenseReport.csv'); // Set the file name to .csv
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link); 
+    document.body.removeChild(link);
     // Redirect to homepage
     window.location.href = "/homePage";
   } catch (err) {
     console.error("Error downloading report:", err);
   }
 });
+
 
   
   //logout function
