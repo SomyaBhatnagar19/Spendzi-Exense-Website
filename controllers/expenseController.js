@@ -1,11 +1,14 @@
 /* /controllers/expenseController.js */
 
+require("dotenv").config();
 const path = require("path");
 const Expense = require("../models/expenseModel");
 const database = require("../util/database");
 const User = require("../models/userModel");
 const sequelize = require('../util/database');
 const AWS = require("aws-sdk");
+const Credit = require("../models/creditExpenseModel");
+
 exports.getHomePage = async (req, res, next) => {
   try {
     res.sendFile(
@@ -119,9 +122,9 @@ exports.getHomePage = async (req, res, next) => {
 
 //S3 Services for download and file uploads
   exports.uploadToS3 = (data, filename) => {
-    const BUCKET_NAME = "spendzi-expense-tracker-reports";
-    const IAM_USER_KEY = "AKIA5D6VUZQBKFDKYUNS";
-    const IAM_USER_SECRET = "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";
+    const BUCKET_NAME = process.env.BUCKET_NAME;
+    const IAM_USER_KEY = process.env.IAM_USER_KEY;
+    const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
   
     AWS.config.update({
       accessKeyId: IAM_USER_KEY,
@@ -147,18 +150,50 @@ exports.getHomePage = async (req, res, next) => {
     });
   };
   
-  exports.downloadExpense = async (req, res) => {
-    try {
-      const expenses = await Expense.findAll({ where: { userId: req.user.id } });
-      const stringifiedExpenses = JSON.stringify(expenses);
-      const filename = "Expense.txt";
-      exports.uploadToS3(stringifiedExpenses, filename);
-      res.status(200).json({ success: true });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ success: false, error: err.message });
-    }
-  };
+//file downloading 
+exports.downloadExpense = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const expenses = await Expense.findAll({ where: { userId: userId } });
+
+    // Calculate total expenses
+    let totalExpense = 0;
+    expenses.forEach((expense) => {
+      totalExpense += expense.amount;
+    });
+
+    // Get user's income and savings
+    const credits = await Credit.findAll({ where: { userId: userId } });
+    const income = credits.reduce((acc, credit) => acc + credit.totalIncome, 0);
+    // Calculate savings
+    const savings = income - totalExpense;
+
+    // Create a CSV string
+    let csv = 'Date,Category,Description,Amount\n';
+    expenses.forEach((expense) => {
+      csv += `${expense.date},${expense.category},${expense.description},${expense.amount}\n`;
+    });
+
+    // Add income, savings, and total expense to the CSV string
+   
+    csv += `\nDebit/ Expenditure,,,${totalExpense}\n`;
+
+    csv += `\nCredit/ Income,,,${income}\n`;
+    csv += `"Savings",,,${savings}\n`;
+
+    // Set the content type to CSV and attachment
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=ExpenseReport.csv');
+
+    // Send the CSV content as the response
+    res.status(200).send(csv);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
 
   //for pagination
   exports.getAllExpensesforPagination = async (req, res, next) => {

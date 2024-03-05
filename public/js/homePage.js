@@ -335,7 +335,8 @@ async function isPremiumUser() {
     buyPremiumBtn.innerHTML = "Premium Member &#128081";
     reportsLink.removeAttribute("onclick");
     leaderboardLink.removeAttribute("onclick");
-
+    downloadReportBtn.removeAttribute("onclick");
+    
     //for leaderboard functionality
     leaderboardLink.setAttribute("href", "/premium/getLeaderboardPage");
 
@@ -431,24 +432,28 @@ document
   .getElementById("addCreditBtn")
   .addEventListener("click", addCreditExpense);
 
-  // downloadReportBtn.addEventListener("click", async (e) => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const res = await axios.get("http://localhost:3000/expense/downloadReport", {
-  //       headers: { Authorization: token },
-  //       responseType: 'blob', // Set the response type to blob
-  //     });
-  //     const url = window.URL.createObjectURL(new Blob([res.data]));
-  //     const link = document.createElement('a');
-  //     link.href = url;
-  //     link.setAttribute('download', 'ExpenseReport.txt');
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     link.parentNode.removeChild(link);
-  //   } catch (err) {
-  //     console.error("Error downloading report:", err);
-  //   }
-  // });
+  //functionality for expenses download on homepage
+downloadReportBtn.addEventListener("click", async (e) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.get("http://localhost:3000/expense/downloadReport", {
+      headers: { Authorization: token },
+      responseType: 'blob', 
+    });
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'ExpenseReport.csv'); // Set the file name to .csv
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link); 
+    // Redirect to homepage
+    window.location.href = "/homePage";
+  } catch (err) {
+    console.error("Error downloading report:", err);
+  }
+});
+
   
   //logout function
   async function logout() {
