@@ -12,6 +12,8 @@ const buyPremiumBtn = document.getElementById("buyPremiumBtn");
 const reportsLink = document.getElementById("reportsLink");
 const leaderboardLink = document.getElementById("leaderboardLink");
 const downloadReportBtn = document.getElementById("downloadReportBtn");
+
+
 const logoutBtn = document.getElementById("logout-btn");
 
 categoryItems.forEach((item) => {
@@ -344,7 +346,8 @@ async function isPremiumUser() {
     reportsLink.setAttribute("href", "/reports/getReportsPage");
 
     //for s3 download services
-    downloadReportBtn.setAttribute("href", "/expense/downloadReport")
+    downloadReportBtn.setAttribute("href", "/expense/downloadReport");
+    downloadReportBtn.innerHTML = "Download Report &#x1F4E5;";
 
     buyPremiumBtn.removeEventListener("click", buyPremium);
   } else {
@@ -432,53 +435,35 @@ document
   .getElementById("addCreditBtn")
   .addEventListener("click", addCreditExpense);
 
-// //functionality for expenses download on homepage
-// downloadReportBtn.addEventListener("click", async (e) => {
-//   try {
-//     const token = localStorage.getItem("token");
-//     console.log("inside downloadbtn: ", token);
-//     const res = await axios.get("http://localhost:3000/expense/downloadReport", {
-//       headers: { Authorization: token },
-//       responseType: 'blob', 
-//     });
-//     const url = window.URL.createObjectURL(new Blob([res.data]));
-//     const link = document.createElement('a');
-//     link.href = url;
-//     link.setAttribute('download', 'ExpenseReport.csv'); // Set the file name to .csv
-//     document.body.appendChild(link);
-//     link.click();
-//     document.body.removeChild(link); 
-//     // Redirect to homepage
-//     // window.location.href = "/homePage";
-//   } catch (err) {
-//     console.error("Error downloading report:", err);
-//   }
-// });
-// Frontend code
+//download report button functionality
 downloadReportBtn.addEventListener("click", async (e) => {
   try {
     const token = localStorage.getItem("token");
-    console.log("inside downloadbtn: ", token);
-    const res = await axios.get("http://localhost:3000/expense/downloadReport", {
+    const res = await axios.get("http://localhost:3000/user/isPremiumUser", {
       headers: { Authorization: token },
-      responseType: 'blob',
     });
-    const url = window.URL.createObjectURL(new Blob([res.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'ExpenseReport.csv'); // Set the file name to .csv
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    // Redirect to homepage
-    window.location.href = "/homePage";
+    if (res.data.isPremiumUser) {
+      const res = await axios.get("http://localhost:3000/expense/downloadReport", {
+        headers: { Authorization: token },
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'ExpenseReport.csv'); // Set the file name to .csv
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      // Redirect to homepage
+      window.location.href = "/homePage";
+    } else {
+      alert("This feature is only available for premium members.");
+    }
   } catch (err) {
     console.error("Error downloading report:", err);
   }
 });
 
-
-  
   //logout function
   async function logout() {
     try {
