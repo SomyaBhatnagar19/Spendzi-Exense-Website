@@ -442,6 +442,7 @@ downloadReportBtn.addEventListener("click", async (e) => {
     const res = await axios.get("http://localhost:3000/user/isPremiumUser", {
       headers: { Authorization: token },
     });
+    //checking if user has premium membership
     if (res.data.isPremiumUser) {
       const res = await axios.get("http://localhost:3000/expense/downloadReport", {
         headers: { Authorization: token },
@@ -459,6 +460,7 @@ downloadReportBtn.addEventListener("click", async (e) => {
     } else {
       alert("This feature is only available for premium members.");
     }
+    window.location.href = "/homePage";
   } catch (err) {
     console.error("Error downloading report:", err);
   }
