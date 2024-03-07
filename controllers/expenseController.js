@@ -1,13 +1,16 @@
 /* /controllers/expenseController.js */
 
 require("dotenv").config();
+
 const path = require("path");
+const jwt = require("jsonwebtoken");
 const Expense = require("../models/expenseModel");
 const database = require("../util/database");
 const User = require("../models/userModel");
 const sequelize = require('../util/database');
 const AWS = require("aws-sdk");
 const Credit = require("../models/creditExpenseModel");
+const S3Sevices = require("../services/S3Services");
 
 exports.getHomePage = async (req, res, next) => {
   try {
@@ -120,79 +123,47 @@ exports.getHomePage = async (req, res, next) => {
     }
   };
 
-//S3 Services for download and file uploads
-exports.uploadToS3 = (data, filename) => {
-  const BUCKET_NAME = process.env.BUCKET_NAME;
-    const IAM_USER_KEY = process.env.IAM_USER_KEY;
-    const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
 
-  AWS.config.update({
-    accessKeyId: IAM_USER_KEY,
-    secretAccessKey: IAM_USER_SECRET,
-  });
+/* ------------------------------------------------------------S3SERVICES---------------------------------------------------------------------------  */ 
 
-  const s3bucket = new AWS.S3({ params: { Bucket: BUCKET_NAME } });
-
-  const params = {
-    Bucket: BUCKET_NAME,
-    Key: filename,
-    Body: data,
-  };
-
-  s3bucket.upload(params, (err, s3response) => {
-    if (err) {
-      console.log('Something went wrong.', err);
-    } else {
-      console.log('File uploaded successfully.', s3response.Location);
-    }
-  });
-};
 
 //functionality for downloading expense report
 exports.downloadExpense = async (req, res) => {
   try {
     const userId = req.user.id;
-
     // Fetch expenses
     const expenses = await Expense.findAll({ where: { userId: userId } });
-
     // Calculate total expenses
     let totalExpense = 0;
     expenses.forEach((expense) => {
       totalExpense += expense.amount;
     });
-
     // Fetch user's credits (income)
     const credits = await Credit.findAll({ where: { userId: userId } });
     let totalIncome = 0;
     credits.forEach((credit) => {
       totalIncome += credit.totalIncome;
     });
-
     // Calculate savings
     const savings = totalIncome - totalExpense;
-
     // Create a CSV string
     let csv = 'Date,Category,Description,Amount\n';
     expenses.forEach((expense) => {
       csv += `${expense.date},${expense.category},${expense.description},${expense.amount}\n`;
     });
-
     // Add income, total expenses, and savings to the CSV string
     csv += `\nTotal Income,,,${totalIncome}\n`;
     csv += `Total Expenses,,,${totalExpense}\n`;
     csv += `Savings,,,${savings}\n`;
-
     // Set the content type to CSV and attachment
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', 'attachment; filename=ExpenseReport.csv');
-
     // Send the CSV content as the response
     res.status(200).send(csv);
 
     // Upload the CSV file to S3
     const filename = `${userId}_${new Date()}_ExpenseReport.csv`;
-    await exports.uploadToS3(csv, filename);
+    await S3Sevices.uploadToS3(csv, filename);
 
   } catch (err) {
     console.error('Error downloading expenses:', err);
@@ -200,7 +171,7 @@ exports.downloadExpense = async (req, res) => {
   }
 };
 
-
+/* ---------------------------------------------------------PAGINATION---------------------------------------------------------------------------------  */
   //for pagination
   exports.getAllExpensesforPagination = async (req, res, next) => {
     try {
