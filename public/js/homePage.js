@@ -439,28 +439,29 @@ document
 downloadReportBtn.addEventListener("click", async (e) => {
   try {
     const token = localStorage.getItem("token");
+    console.log("download report ka token: ", token);
+    
     const res = await axios.get("http://localhost:3000/user/isPremiumUser", {
       headers: { Authorization: token },
     });
-    //checking if user has premium membership
+    // Checking if user has premium membership
     if (res.data.isPremiumUser) {
-      const res = await axios.get("http://localhost:3000/expense/downloadReport", {
+      const downloadRes = await axios.get("http://localhost:3000/expense/downloadReport", {
         headers: { Authorization: token },
         responseType: 'blob',
       });
-      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const url = window.URL.createObjectURL(new Blob([downloadRes.data]));
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', 'ExpenseReport.csv'); // Set the file name to .csv
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      // Redirect to homepage
+      // Redirect to homepage after download
       window.location.href = "/homePage";
     } else {
       alert("This feature is only available for premium members.");
     }
-    window.location.href = "/homePage";
   } catch (err) {
     console.error("Error downloading report:", err);
   }
