@@ -188,7 +188,6 @@
               <div class="mb-3 d-flex justify-content-end m-4" id="submit">
                 <button type="submit" class="btn btn-success" id="submitBtn">Add Expense</button>
               </div>
-              
         </form>
       </div>
 
@@ -211,8 +210,12 @@
             </tbody>
           </table> 
           <div id="download">
-            <a id="downloadReportBtn" href="#" onclick="onClickAlert();">Download Report</a>
-          
+            <a id="downloadReportBtn" href="#" onclick="onClickAlert();" >Download Report &#128274;</a>  
+
+            <label for="expensesPerPage">Expenses Per Page:</label>
+            <input type="number" id="expensesPerPage" min="1" value="5">
+            <button id="updatePerPageBtn">Update</button>
+            
           <nav aria-label="Page navigation example">
             <ul id="paginationUL" class="pagination justify-content-md-end">
             </ul>
