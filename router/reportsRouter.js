@@ -22,5 +22,4 @@ router.post(
     reportsController.monthlyReports
   );
 
-  
 module.exports = router;
