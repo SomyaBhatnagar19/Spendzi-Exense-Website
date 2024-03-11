@@ -3,7 +3,7 @@
 //daily
 const dateInput = document.getElementById("date");
 const dateShowBtn = document.getElementById("dateShowBtn");
-const tbodyDaily = document.getElementById("tbodyDailyId"); // Updated variable name
+const tbodyDaily = document.getElementById("tbodyDailyId"); 
 const tfootDaily = document.getElementById("tfootDailyId");
 
 //flexi
@@ -24,6 +24,9 @@ const yearInput = document.getElementById("year-input");
 const yearShowBtn = document.getElementById("yearShowBtn");
 const tbodyYearly = document.getElementById("tbodyYearlyId");
 const tfootYearly = document.getElementById("tfootYearlyId");
+
+const downloadReportBtn = document.getElementById("downloadReportBtn");
+const logoutBtn = document.getElementById("logout-btn");
 
 //daily report
 async function getDailyReport(e) {
@@ -247,5 +250,48 @@ dateShowBtn.addEventListener("click", getDailyReport);
 weeklyForm.addEventListener("submit", getFlexiReport);
 
 monthShowBtn.addEventListener("click", getMonthlyReport);
+
+async function downloadReport() {
+  try {
+    const token = localStorage.getItem("token");
+    const premiumUserRes = await axios.get("http://localhost:3000/user/isPremiumUser", {
+      headers: { Authorization: token },
+    });
+
+    if (premiumUserRes.data.isPremiumUser) {
+      const downloadRes = await axios.get("http://localhost:3000/expense/downloadReport", {
+        headers: { Authorization: token },
+        responseType: "blob",
+      });
+
+      const url = window.URL.createObjectURL(new Blob([downloadRes.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "ExpenseReport.csv");
+      document.body.appendChild(link);
+      link.click();
+      link.remove(); // Remove the link after download
+    } else {
+      alert("This feature is only available for premium members.");
+    }
+  } catch (err) {
+    console.error("Error downloading report:", err);
+  }
+}
+
+downloadReportBtn.addEventListener("click", downloadReport);
+
+ //logout function
+ async function logout() {
+  try {
+    localStorage.clear();
+    window.location.href = "/";
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+logoutBtn.addEventListener("click", logout);
+
 
 
