@@ -54,17 +54,44 @@
 
 
  <!-- -------------------------------------------------------------------------  -->
+ <!-- Modal -->
+<div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="historyModalLabel">Download History</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">S.No.</th>
+              <th scope="col">Date</th>
+              <th scope="col">Download URL</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <!-- History items -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
  <!-- Report Chart -->
  
  <div class="container mt-4 p-3" id="table">
   <ul class="list-unstyled d-flex justify-content-between bg-primary text-light rounded p-2">
-    <li id="income" class="flex-grow-1 pl-3 text-center" style="background-color: #4CAF50; color: #1b333a; padding: 1rem; margin: 2rem; font-weight: bold;">Income:</li>
-    <li id="saving" class="flex-grow-1 text-right pr-3 text-center" style="background-color: #FFC107; color: #1b333a; padding: 1rem; margin: 2rem; font-weight: bold;">Savings:</li>
+    <li id="income" class="flex-grow-1 pl-3 text-center" style="background-color: #4CAF50; color: #1b333a; padding: 1rem; margin: 2rem; font-weight: bold;">Income: </li>
+    <li id="saving" class="flex-grow-1 text-right pr-3 text-center" style="background-color: #FFC107; color: #1b333a; padding: 1rem; margin: 2rem; font-weight: bold;">Savings: </li>
     <button id="downloadReportBtn" class="flex-grow-1 text-right pr-3 text-center" style="background-color: #590544; color: #f9fdfe; padding: 1rem; margin: 2rem; font-weight: bold;">Download Report &#x1F4E5;</button>
+    <button id="downloadReportHistoryBtn" class="flex-grow-1 text-right pr-3 text-center" style="background-color: #791818; color: #f9fdfe; padding: 1rem; margin: 2rem; font-weight: bold;">Download History &#x1F4C5;</button>
   </ul>
 </div>
-
-
 
     <!-- ----------------------------------------------------------------------- -->
     <!-- Daily Table -->
