@@ -17,6 +17,50 @@ body {
   .nav-link {
     color: #ffffff;
   }
+
+  /* modal */
+
+.modal-header {
+  background-color: #152a3f; 
+  border-bottom: 1px solid #07213a; 
+}
+
+.modal-title {
+  color: #e7f0f9; 
+}
+
+.modal-body {
+  padding: 1rem; 
+  background-color: #6283a5;
+}
+
+.modal-footer {
+  background-color: #0b243d; 
+  border-top: 1px solid #dee2e6; 
+}
+
+/* Styling for table */
+.table {
+  margin-bottom: 0;
+  background-color: #f2f5f9; 
+}
+
+.table th,
+.table td {
+  vertical-align: middle; 
+  color:#07213a;
+}
+
+.table th {
+  background-color: #1e87f7; 
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #245d95; 
+
+}
+
   
   #report {
     background-color: #4f46e5;

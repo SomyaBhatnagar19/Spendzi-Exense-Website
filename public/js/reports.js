@@ -235,9 +235,10 @@ async function getCreditExpenseData() {
     const totalSavingsElement = document.getElementById("saving");
 
     if (totalIncomeElement && totalSavingsElement) {
-      totalIncomeElement.innerText = `Income: Rs. ${totalIncomeSum}`;
-      totalSavingsElement.innerText = `Savings: Rs. ${totalSavingsSum}`;
+      totalIncomeElement.innerHTML = `Income <span>&#x1F4B0;</span>: Rs. ${totalIncomeSum}`;
+      totalSavingsElement.innerHTML = `Savings <span>&#x1F4B8;</span>: Rs. ${totalSavingsSum}`;
     }
+    
   } catch (err) {
     console.error("Error getting credit expense data:", err);
   }
@@ -263,7 +264,7 @@ async function downloadReport() {
         headers: { Authorization: token },
         responseType: "blob",
       });
-
+     console.log("DownloadRes: ", downloadRes);
       const url = window.URL.createObjectURL(new Blob([downloadRes.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -271,6 +272,17 @@ async function downloadReport() {
       document.body.appendChild(link);
       link.click();
       link.remove(); // Remove the link after download
+
+      // Record download history
+      const date= new Date();
+      const res = await axios.post("http://localhost:3000/history/downloadReportHistory", {
+        userId: downloadRes.userId, 
+      
+        downloadedAt: date,
+      }, {
+        headers: { Authorization: token },
+      });
+      console.log("Response of history from frontend: ", res);
     } else {
       alert("This feature is only available for premium members.");
     }
@@ -280,6 +292,52 @@ async function downloadReport() {
 }
 
 downloadReportBtn.addEventListener("click", downloadReport);
+
+// Function to show history in modal
+const viewHistory = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axios.get("http://localhost:3000/history/showDownloadReportHistory",{
+      headers: {Authorization: token},
+    });
+
+    const modalBody = document.getElementById("historyTableBody");
+    modalBody.innerHTML = "";
+
+    res.data.forEach((item, index) => {
+      let tr = document.createElement("tr");
+      let th = document.createElement("th");
+      th.setAttribute("scope", "row");
+      th.textContent = index + 1;
+
+      let tdDate = document.createElement("td");
+      let date = new Date(item.createdAt);
+      tdDate.textContent = date.toLocaleString();
+
+      let tdUrl = document.createElement("td");
+      let a = document.createElement("a");
+      a.setAttribute("href", item.fileUrl);
+      a.setAttribute("target", "_blank");
+      a.textContent = "Download";
+      tdUrl.appendChild(a);
+
+      tr.appendChild(th);
+      tr.appendChild(tdDate);
+      tr.appendChild(tdUrl);
+
+      modalBody.appendChild(tr);
+    });
+
+    // Show the modal
+    var myModal = new bootstrap.Modal(document.getElementById('historyModal'));
+    myModal.show();
+  } catch(err) {
+    console.log("Error in showing history. ", err);
+  }
+};
+
+// Event listener for the button
+document.getElementById("downloadReportHistoryBtn").addEventListener('click', viewHistory);
 
  //logout function
  async function logout() {
