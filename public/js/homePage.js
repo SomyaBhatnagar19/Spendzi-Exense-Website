@@ -73,12 +73,13 @@ async function addExpense() {
   }
 }
 
-async function getAllExpenses() {
-  // e.preventDefault();
+async function getAllExpenses(pageNo = 1, pageSize = 5) {
   try {
     const token = localStorage.getItem("token");
+    console.log("Page no.: ", `${pageNo}`);
+    console.log("page size: ", `${pageSize}`);
     const res = await axios.get(
-      "http://localhost:3000/expense/getAllExpenses/1",
+      `http://localhost:3000/expense/getAllExpenses/${pageNo}?limit=${pageSize}`,
       { headers: { Authorization: token } }
     );
     res.data.expenses.forEach((expenses) => {
@@ -137,7 +138,10 @@ async function getAllExpenses() {
       tr.appendChild(td3);
       tr.appendChild(td4);
     });
+
     const ul = document.getElementById("paginationUL");
+    ul.innerHTML = ""; // Clear existing pagination links
+
     for (let i = 1; i <= res.data.totalPages; i++) {
       const li = document.createElement("li");
       const a = document.createElement("a");
@@ -154,13 +158,22 @@ async function getAllExpenses() {
   }
 }
 
+// Add an event listener to the "Update" button
+document.getElementById("updatePerPageBtn").addEventListener("click", () => {
+  const newPageSize = parseInt(document.getElementById("expensesPerPage").value) || 5;
+  getAllExpenses(1, newPageSize);
+});
+
 //pagination function
 async function paginationBtn(e) {
+  e.preventDefault();
   try {
-    const pageNo = e.target.textContent;
+    const pageNo = e.target.textContent; // Get the page number from the clicked element
+    const pageSize = document.getElementById("expensesPerPage").value; // Get the page size from the input field
+
     const token = localStorage.getItem("token");
     const res = await axios.get(
-      `http://localhost:3000/expense/getAllExpenses/${pageNo}`,
+      `http://localhost:3000/expense/getAllExpenses/${pageNo}?limit=${pageSize}`,
       { headers: { Authorization: token } }
     );
 
@@ -227,6 +240,7 @@ async function paginationBtn(e) {
   }
 }
 
+
 async function deleteExpense(e) {
   try {
     const token = localStorage.getItem("token");
@@ -291,7 +305,7 @@ async function editExpense(e) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", getAllExpenses);
+document.addEventListener("DOMContentLoaded", getAllExpenses(1));
 
 async function buyPremium(e) {
   const token = localStorage.getItem("token");
@@ -436,29 +450,40 @@ document
   .addEventListener("click", addCreditExpense);
 
 //download report button functionality
-downloadReportBtn.addEventListener("click", async (e) => {
+downloadReportBtn.addEventListener("click", async () => {
   try {
+    // const user = JSON.parse(localStorage.getItem("user"));
+
     const token = localStorage.getItem("token");
     console.log("download report ka token: ", token);
     
     const res = await axios.get("http://localhost:3000/user/isPremiumUser", {
       headers: { Authorization: token },
     });
+    console.log("Res: ", res);
     // Checking if user has premium membership
     if (res.data.isPremiumUser) {
       const downloadRes = await axios.get("http://localhost:3000/expense/downloadReport", {
         headers: { Authorization: token },
         responseType: 'blob',
       });
+      console.log("downloadRes: ", downloadRes);
+     
       const url = window.URL.createObjectURL(new Blob([downloadRes.data]));
       const link = document.createElement('a');
       link.href = url;
+      localStorage.setItem("url", url);
       link.setAttribute('download', 'ExpenseReport.csv'); // Set the file name to .csv
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+
       // Redirect to homepage after download
       window.location.href = "/homePage";
+
+      // // Record download history
+      // recordDownloadHistory();
+
     } else {
       alert("This feature is only available for premium members.");
     }

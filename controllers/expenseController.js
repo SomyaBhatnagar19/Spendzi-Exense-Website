@@ -127,7 +127,7 @@ exports.getHomePage = async (req, res, next) => {
 /* ------------------------------------------------------------S3SERVICES---------------------------------------------------------------------------  */ 
 
 
-//functionality for downloading expense report
+//functionality for downloading expense report using S3
 exports.downloadExpense = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -162,7 +162,7 @@ exports.downloadExpense = async (req, res) => {
     res.status(200).send(csv);
 
     // Upload the CSV file to S3
-    const filename = `${userId}_${new Date()}_ExpenseReport.csv`;
+    const filename = `${userId}_ExpenseReport.csv`;
     await S3Sevices.uploadToS3(csv, filename);
 
   } catch (err) {
@@ -173,22 +173,47 @@ exports.downloadExpense = async (req, res) => {
 
 /* ---------------------------------------------------------PAGINATION---------------------------------------------------------------------------------  */
   //for pagination
-  exports.getAllExpensesforPagination = async (req, res, next) => {
+  // exports.getAllExpensesforPagination = async (req, res, next) => {
+  //   try {
+  //     const pageNo = req.params.page;
+  //     // const limit = 5;
+  //     let limit = parseInt(req.query.limit) || 5; 
+  //     const offset = (pageNo - 1) * limit;
+  //     const totalExpenses = await Expense.count({
+  //       where: { userId: req.user.id },
+  //     });
+  //     const totalPages = Math.ceil(totalExpenses / limit);
+  //     const expenses = await Expense.findAll({
+  //       where: { userId: req.user.id },
+  //       offset: offset,
+  //       limit: limit,
+  //     });
+  //     res.json({ expenses: expenses, totalPages: totalPages });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  exports.getAllExpensesforPagination = async (req, res) => {
     try {
       const pageNo = req.params.page;
-      const limit = 5;
-      const offset = (pageNo - 1) * limit;
-      const totalExpenses = await Expense.count({
-        where: { userId: req.user.id },
-      });
-      const totalPages = Math.ceil(totalExpenses / limit);
+      const pageSize = req.query.limit || 5; // Default page size is 5 if not provided
+      console.log("page no.: ", pageNo);
+      console.log("page size: ", pageSize);
       const expenses = await Expense.findAll({
         where: { userId: req.user.id },
-        offset: offset,
-        limit: limit,
+        limit: parseInt(pageSize), // Convert pageSize to an integer
+        offset: (pageNo - 1) * pageSize,
+        order: [["createdAt", "DESC"]],
       });
-      res.json({ expenses: expenses, totalPages: totalPages });
-    } catch (err) {
-      console.log(err);
+  
+      const totalExpenses = await Expense.count({ where: { userId: req.user.id } });
+      const totalPages = Math.ceil(totalExpenses / pageSize);
+  
+      res.status(200).json({ expenses, totalPages });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
     }
   };
+
+  
