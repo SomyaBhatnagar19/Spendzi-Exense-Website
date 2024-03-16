@@ -31,7 +31,7 @@ body {
   font-size: large;
 }
 
-#logout-btn {
+#logoutBtn {
   background-color: #451925;
   color: whitesmoke;
 }
@@ -57,7 +57,7 @@ tr:hover {
   background-color: #4a7e93;
 }
 
-.footer {
+/* .footer {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -77,13 +77,12 @@ tr:hover {
     color: #007bff;
     font-size: 1.5rem;
   }
-  
-  /* Style for individual social icons */
+
   .social-icon:hover {
     color: #0056b3;
   }
   
-  /* Responsive styles */
+
 @media (max-width: 768px) {
     .footer {
         position: absolute;
@@ -97,4 +96,4 @@ tr:hover {
       margin: 5px;
     }
   }
-  
+   */

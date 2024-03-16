@@ -2,7 +2,7 @@
 
 require("dotenv").config();
 const AWS = require("aws-sdk");
-exports.uploadToS3 = (data, filename) => {
+const uploadToS3 = async(data, filename) => {
 
     const BUCKET_NAME = process.env.BUCKET_NAME;
       const IAM_USER_KEY = process.env.IAM_USER_KEY;
@@ -17,7 +17,7 @@ exports.uploadToS3 = (data, filename) => {
       Bucket: BUCKET_NAME,
       Key: filename,
       Body: data,
-      ACL: "public-read",
+      ACL: "public-read", 
     };
     s3bucket.upload(params, (err, s3response) => {
       if (err) {
@@ -26,4 +26,8 @@ exports.uploadToS3 = (data, filename) => {
         console.log('File uploaded successfully.', s3response.Location);
       }
     });
+  };
+
+  module.exports = {
+   uploadToS3,
   };
